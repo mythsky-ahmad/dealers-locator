@@ -18,10 +18,12 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto pb-5">
-    <div class="text-5xl font-extrabold p-5 columns-2">
+    <div class="p-5 flex justify-between items-center">
       <div>
         <span
           class="
+            text-5xl
+            font-extrabold
             bg-clip-text
             text-transparent
             bg-gradient-to-r
@@ -34,7 +36,7 @@ onMounted(() => {
         </span>
       </div>
       <div>
-        <input class="text-black" v-model="item.name" type="number" />
+        <input class="text-black text-3xl" v-model="item.name" type="number" />
       </div>
     </div>
     <div><Map /></div>
