@@ -8,6 +8,16 @@ const item = reactive({});
 // import HelloWorld from "./components/HelloWorld.vue";
 // let name = ref("ahmnad hasd oausnd tis ");
 // let item = reactive({});
+let center = reactive({});
+const setPlace = (e) => {
+  if (e) {
+    center.value = {
+      lat: e.geometry.viewport.ub.hi,
+      lng: e.geometry.viewport.Ra.hi,
+    };
+  }
+};
+const filterItems = () => {};
 const store = useMarkerStore();
 onMounted(() => {
   if (!store.all[0]) {
@@ -18,7 +28,7 @@ onMounted(() => {
 
 <template>
   <div class="container mx-auto pb-5">
-    <div class="p-5 flex justify-between items-center">
+    <div class="py-5 flex justify-between items-center">
       <div>
         <span
           class="
@@ -36,10 +46,32 @@ onMounted(() => {
         </span>
       </div>
       <div>
-        <input class="text-black text-3xl" v-model="item.name" type="number" />
+        <GMapAutocomplete
+          placeholder="This is a placeholder"
+          @place_changed="setPlace"
+          :options="{
+            bounds: {
+              north: 49.382808,
+              south: 24.521208,
+              east: -66.945392,
+              west: -124.736342,
+            },
+            strictBounds: true,
+          }"
+        >
+        </GMapAutocomplete>
+      </div>
+
+      <div>
+        <input
+          @input="filterItems()"
+          class="text-black text-3xl relative"
+          v-model="item.name"
+          type="text"
+        />
       </div>
     </div>
-    <div><Map /></div>
+    <div><Map :center2="center.value" /></div>
     <div>
       <div class="container py-5 px-5">
         <div class="columns-4 justify-between text-center">

@@ -11,7 +11,7 @@
         v-for="(m, index) in markers"
         :position="m.position"
         :clickable="true"
-        :draggable="true"
+        :draggable="false"
         :icon="'https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m1.png'"
         @click="openMarker(m.id)"
       >
@@ -35,24 +35,17 @@ export default {
   components: {
     MarkerDetails,
   },
+  props: ["center2"],
   data() {
     return {
       openedMarkerID: null,
-      center: { lat: 51.093048, lng: 6.84212 },
+      center: { lat: 35, lng: -88 },
       markers: [
         {
           id: 1,
           position: {
-            lat: 51.093048,
-            lng: 6.84212,
-          },
-          data: { name: "ahmad", age: 23, status: "single af" },
-        },
-        {
-          id: 2,
-          position: {
-            lat: 51.198429,
-            lng: 6.69529,
+            lat: 35,
+            lng: -88,
           },
           data: { name: "ahmad", age: 23, status: "single af" },
         },
@@ -66,6 +59,21 @@ export default {
   },
   computed: {
     ...mapWritableState(useCounterStore, ["counter"]),
+  },
+  watch: {
+    center2: {
+      handler(val) {
+        if (val.lat) {
+          this.center = val;
+          this.markers[0] = {
+            id: 1,
+            position: val,
+            data: { name: "ahmad", age: 23, status: "single af" },
+          };
+        }
+      },
+      deep: true,
+    },
   },
 };
 </script>

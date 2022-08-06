@@ -16,8 +16,10 @@ app.use(router)
 // plugins
 app.use(VueGoogleMaps, {
     load: {
-        key: '',
+        key: 'AIzaSyDCRQX8mkb1dhYEk98us7k2NM7sUKk_OiI',
+        libraries: "places"
     },
-    autobindAllEvents: true,
+    // autobindAllEvents: true,
+
 })
 app.mount('#app')
