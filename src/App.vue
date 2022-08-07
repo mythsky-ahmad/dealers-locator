@@ -1,33 +1,56 @@
 <script setup>
-import Map from "@/components/Map.vue";
-// import { mapState } from "pinia";
 // import { RouterLink, RouterView } from "vue-router";
-import { onMounted, ref, reactive } from "vue";
-import { useMarkerStore } from "@/stores/marker";
+import {
+  Dialog,
+  DialogPanel,
+  DialogTitle,
+  TransitionChild,
+  TransitionRoot,
+} from "@headlessui/vue";
+import { AdjustmentsIcon } from "@heroicons/vue/outline";
+import { onMounted, ref, reactive, watch } from "vue";
+import { useBranchStore } from "@/stores/branch";
+import { useDealerStore } from "@/stores/dealer";
+import Map from "@/components/Map.vue";
+//data
+const dealer = useDealerStore();
+const branch = useBranchStore();
 const item = reactive({});
-// import HelloWorld from "./components/HelloWorld.vue";
-// let name = ref("ahmnad hasd oausnd tis ");
-// let item = reactive({});
+const open = ref(false);
+const filter = reactive({
+  MaxResults: 20,
+  MaxRadius: 300,
+});
 let center = reactive({});
+
+//methods
 const setPlace = (e) => {
   if (e) {
     center.value = {
-      lat: e.geometry.viewport.ub.hi,
-      lng: e.geometry.viewport.Ra.hi,
+      lat: (e.geometry.viewport.ub.hi + e.geometry.viewport.ub.lo) / 2,
+      lng: (e.geometry.viewport.Ra.hi + e.geometry.viewport.Ra.lo) / 2,
     };
   }
 };
-const filterItems = () => {};
-const store = useMarkerStore();
-onMounted(() => {
-  if (!store.all[0]) {
-    store.index();
+//mouinted
+onMounted(() => {});
+
+//whatch
+watch([filter, center], (a) => {
+  if (a[1].value) {
+    let params = {
+      Lat: a[1].value.lat,
+      Lon: a[1].value.lng,
+      ...a[0],
+    };
+    dealer.getDealers(params);
+    dealer.getBranches(params);
   }
 });
 </script>
 
 <template>
-  <div class="container mx-auto pb-5">
+  <div>
     <div class="py-5 flex justify-between items-center">
       <div>
         <span
@@ -45,7 +68,388 @@ onMounted(() => {
           Dealer Locator
         </span>
       </div>
-      <div>
+      <TransitionRoot as="template" :show="open">
+        <Dialog as="div" class="relative z-10" @close="open = false">
+          <!-- <TransitionChild
+            as="template"
+            enter="ease-out duration-300"
+            enter-from="opacity-0"
+            enter-to="opacity-100"
+            leave="ease-in duration-200"
+            leave-from="opacity-100"
+            leave-to="opacity-0"
+          >
+            <div
+              class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+            />
+          </TransitionChild> -->
+
+          <div class="fixed z-10 inset-0 overflow-y-auto">
+            <div
+              class="
+                flex
+                items-end
+                sm:items-center
+                justify-center
+                min-h-full
+                p-4
+                text-center
+                sm:p-0
+              "
+            >
+              <TransitionChild
+                as="template"
+                enter="ease-out duration-300"
+                enter-from="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enter-to="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leave-from="opacity-100 translate-y-0 sm:scale-100"
+                leave-to="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <DialogPanel
+                  class="
+                    relative
+                    bg-white
+                    rounded-lg
+                    text-left
+                    overflow-hidden
+                    shadow-xl
+                    transform
+                    transition-all
+                    sm:my-8 sm:max-w-lg sm:w-full
+                  "
+                >
+                  <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                    <div class="sm:flex sm:items-start">
+                      <div
+                        class="
+                          mx-auto
+                          flex-shrink-0 flex
+                          items-center
+                          justify-center
+                          h-12
+                          w-12
+                          rounded-full
+                          bg-red-100
+                          sm:mx-0 sm:h-10 sm:w-10
+                        "
+                      ></div>
+                      <div
+                        class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left"
+                      >
+                        <DialogTitle
+                          as="h3"
+                          class="text-xl leading-6 font-medium text-gray-900"
+                        >
+                          filter settings
+                        </DialogTitle>
+                        <div class="mt-2">
+                          <ul class="divide-y divide-gray-200">
+                            <li class="py-2 flex">
+                              <div class="ml-3">
+                                <p class="font-medium text-lg text-gray-900">
+                                  max results
+                                  {{ filter.MaxResults }}
+                                </p>
+                                <div class="flex">
+                                  <button
+                                    @click="filter.MaxResults = 10"
+                                    :class="
+                                      filter.MaxResults == 10
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-white
+                                      rounded-l-lg
+                                      border border-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    10
+                                  </button>
+                                  <button
+                                    @click="filter.MaxResults = 20"
+                                    :class="
+                                      filter.MaxResults == 20
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-whiteborder-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    20
+                                  </button>
+                                  <button
+                                    @click="filter.MaxResults = 30"
+                                    :class="
+                                      filter.MaxResults == 30
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-whiteborder-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    30
+                                  </button>
+                                  <button
+                                    @click="filter.MaxResults = 40"
+                                    :class="
+                                      filter.MaxResults == 40
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-white
+                                      rounded-r-lg
+                                      border border-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    40
+                                  </button>
+                                </div>
+                              </div>
+                            </li>
+                            <li class="py-2 flex">
+                              <div class="ml-3">
+                                <p class="font-medium text-lg text-gray-900">
+                                  max radius {{ filter.MaxRadius }}
+                                </p>
+                                <div class="flex">
+                                  <button
+                                    @click="filter.MaxRadius = 100"
+                                    :class="
+                                      filter.MaxRadius == 100
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-white
+                                      rounded-l-lg
+                                      border border-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    100
+                                  </button>
+                                  <button
+                                    @click="filter.MaxRadius = 200"
+                                    :class="
+                                      filter.MaxRadius == 200
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-whiteborder-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    200
+                                  </button>
+                                  <button
+                                    @click="filter.MaxRadius = 300"
+                                    :class="
+                                      filter.MaxRadius == 300
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-whiteborder-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    300
+                                  </button>
+                                  <button
+                                    @click="filter.MaxRadius = 400"
+                                    :class="
+                                      filter.MaxRadius == 400
+                                        ? 'z-10 ring-2 ring-blue-700 text-blue-700  dark:ring-blue-500 dark:text-white'
+                                        : ''
+                                    "
+                                    class="
+                                      py-2
+                                      px-4
+                                      text-sm
+                                      font-medium
+                                      text-gray-900
+                                      bg-white
+                                      rounded-r-lg
+                                      border border-gray-200
+                                      hover:bg-gray-100 hover:text-blue-700
+                                      dark:bg-gray-700
+                                      dark:border-gray-600
+                                      dark:text-white
+                                      dark:hover:text-white
+                                      dark:hover:bg-gray-600
+                                    "
+                                  >
+                                    400
+                                  </button>
+                                </div>
+                              </div>
+                            </li>
+                            <li class="py-2 flex">
+                              <div class="ml-3">
+                                <p class="font-medium text-lg text-gray-900">
+                                  key word
+                                </p>
+                                <div class="flex">
+                                  <input
+                                    placeholder="test"
+                                    class="border-2 mt-2 p-2"
+                                    type="text"
+                                  />
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="
+                      bg-gray-50
+                      px-4
+                      py-3
+                      sm:px-6 sm:flex sm:flex-row-reverse
+                    "
+                  >
+                    <button
+                      type="button"
+                      class="
+                        w-full
+                        inline-flex
+                        justify-center
+                        rounded-md
+                        border border-transparent
+                        shadow-sm
+                        px-4
+                        py-2
+                        bg-blue-600
+                        text-base
+                        font-medium
+                        text-white
+                        hover:bg-blue-700
+                        focus:outline-none
+                        focus:ring-2
+                        focus:ring-offset-2
+                        focus:ring-blue-500
+                        sm:ml-3 sm:w-auto sm:text-sm
+                      "
+                      @click="open = false"
+                    >
+                      search
+                    </button>
+                    <button
+                      type="button"
+                      class="
+                        mt-3
+                        w-full
+                        inline-flex
+                        justify-center
+                        rounded-md
+                        border border-gray-300
+                        shadow-sm
+                        px-4
+                        py-2
+                        bg-white
+                        text-base
+                        font-medium
+                        text-gray-700
+                        hover:bg-gray-50
+                        focus:ring-500
+                        sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm
+                      "
+                      @click="open = false"
+                      ref="cancelButtonRef"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </DialogPanel>
+              </TransitionChild>
+            </div>
+          </div>
+        </Dialog>
+      </TransitionRoot>
+      <div class="flex">
         <GMapAutocomplete
           placeholder="This is a placeholder"
           @place_changed="setPlace"
@@ -60,33 +464,29 @@ onMounted(() => {
           }"
         >
         </GMapAutocomplete>
+        <button
+          @click="open = true"
+          class="
+            text-center
+            font-bold
+            py-3
+            hover:bg-red-100
+            bg-white
+            border-2 border-grey
+          "
+        >
+          <AdjustmentsIcon class="h-6 w-6" />
+        </button>
       </div>
+    </div>
 
-      <div>
-        <input
-          @input="filterItems()"
-          class="text-black text-3xl relative"
-          v-model="item.name"
-          type="text"
-        />
-      </div>
-    </div>
-    <div><Map :center2="center.value" /></div>
-    <div>
-      <div class="container py-5 px-5">
-        <div class="columns-4 justify-between text-center">
-          <div class="w-80" :key="i" v-for="(data, i) in store.all">
-            {{ data.id }}
-          </div>
-        </div>
-      </div>
-    </div>
+    <Map :center2="center.value" />
   </div>
 
   <!-- <RouterView /> -->
 </template>
 
-<style scoped>
+<style  >
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -147,5 +547,18 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+.pac-target-input {
+  padding: 16px;
+}
+.pac-item > :nth-child(3) {
+  display: block;
+  padding-left: 25px;
+}
+.pac-icon {
+  position: relative;
+}
+.hdpi.pac-logo:after {
+  background-image: none !important;
 }
 </style>

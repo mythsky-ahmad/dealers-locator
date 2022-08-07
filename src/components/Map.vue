@@ -12,7 +12,11 @@
         :position="m.position"
         :clickable="true"
         :draggable="false"
-        :icon="'https://raw.githubusercontent.com/googlemaps/v3-utility-library/master/markerclustererplus/images/m1.png'"
+        :icon="{
+          url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA3bgI4Z_xq271agLfNeTWmJbha3-ZPm7bHVO6wjU&s',
+          scaledSize: { width: 22, height: 22 },
+          labelOrigin: { x: 16, y: -10 },
+        }"
         @click="openMarker(m.id)"
       >
         <GMapInfoWindow
@@ -28,8 +32,8 @@
 </template>
 
 <script>
-import { mapWritableState } from "pinia";
-import { useCounterStore } from "@/stores/counter";
+import { mapState } from "pinia";
+import { useDealerStore } from "@/stores/dealer";
 import MarkerDetails from "@/components/MarkerDetails.vue";
 export default {
   components: {
@@ -58,7 +62,10 @@ export default {
     },
   },
   computed: {
-    ...mapWritableState(useCounterStore, ["counter"]),
+    // ...mapState(useDealerStore, ["all"]),
+    ...mapState(useDealerStore, {
+      all: (store) => store.all,
+    }),
   },
   watch: {
     center2: {

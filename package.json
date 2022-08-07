@@ -8,6 +8,9 @@
   },
   "dependencies": {
     "@fawmi/vue-google-maps": "^0.9.72",
+    "@headlessui/vue": "^1.6.7",
+    "@heroicons/vue": "^1.0.6",
+    "@vue-hero-icons/outline": "^1.7.2",
     "axios": "^0.27.2",
     "pinia": "^2.0.16",
     "vue": "^3.2.37",
