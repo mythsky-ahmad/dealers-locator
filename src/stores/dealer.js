@@ -15,8 +15,12 @@ export const useDealerStore = defineStore({
                 "MapSessionKey": "",
                 "Keywords": ""
             }
+            let headers = {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            };
             try {
-                const response = await axios.post('https://localhost:5013/api/branches/searchDealers', new_params)
+                const response = await axios.post('https://localhost:5013/api/branches/searchDealers', new_params, { headers })
                 this.all = response.data
                 console.log(response.data);
             } catch (error) {
@@ -31,8 +35,12 @@ export const useDealerStore = defineStore({
                 "MapSessionKey": "",
                 "Keywords": ""
             }
+            let headers = {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+            };
             try {
-                const response = await axios.post('https://localhost:5013/api/branches/searchBranches', new_params)
+                const response = await axios.post('https://localhost:5013/api/branches/searchBranches', new_params, { headers })
                 this.all = response.data
                 console.log(response.data);
             } catch (error) {
