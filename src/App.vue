@@ -9,12 +9,10 @@ import {
 } from "@headlessui/vue";
 import { AdjustmentsIcon } from "@heroicons/vue/outline";
 import { onMounted, ref, reactive, watch } from "vue";
-import { useBranchStore } from "@/stores/branch";
 import { useDealerStore } from "@/stores/dealer";
 import Map from "@/components/Map.vue";
 //data
 const dealer = useDealerStore();
-const branch = useBranchStore();
 const item = reactive({});
 const open = ref(false);
 const filter = reactive({
