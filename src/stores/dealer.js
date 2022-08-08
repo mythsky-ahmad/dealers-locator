@@ -23,8 +23,8 @@ export const useDealerStore = defineStore({
             };
             try {
                 const response = await axios.post('https://localhost:5013/api/branches/searchDealers', new_params, { headers })
-                this.dealers = response.records
-                console.log(response.records);
+                this.dealers = response.data.records
+                console.log(response.data.records);
             } catch (error) {
                 console.log(error);
             }
@@ -43,7 +43,7 @@ export const useDealerStore = defineStore({
             };
             try {
                 const response = await axios.post('https://localhost:5013/api/branches/searchBranches', new_params, { headers })
-                this.branches = response.records
+                this.branches = response.data.records
 
             } catch (error) {
                 console.log(error);

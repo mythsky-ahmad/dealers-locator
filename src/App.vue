@@ -7,6 +7,7 @@ import { useDealerStore } from "@/stores/dealer";
 import Map from "@/components/Map.vue";
 import Filter from "@/components/Filter.vue";
 import DelearsTable from "@/components/DelearsTable.vue";
+import BranchesTable from "@/components/BranchesTable.vue";
 
 //data
 
@@ -64,7 +65,7 @@ onMounted(() => {});
 </script>
 
 <template>
-  <div class="container">
+  <div>
     <div class="py-5 flex justify-between items-center">
       <div>
         <span
@@ -124,22 +125,15 @@ onMounted(() => {});
       v-if="dealer.branches[0] || dealer.dealers[0]"
       class="border-2 border-white p-5"
     >
-      <DelearsTable
+      <BranchesTable
         v-if="dealer.branches[0]"
-        :items="[
-          { name: 'ahmad', age: 33 },
-          { name: 'ahmad', age: 33 },
-        ]"
+        :items="dealer.branches"
         :haeders="['Branch Office', 'Distance (mi)']"
       />
       <DelearsTable
         v-if="dealer.dealers[0]"
         class="mt-8"
-        :items="[
-          { name: 'ahmad', age: 33, test: 12, tesw: 15 },
-          { name: 'ahmad', age: 33, test: 12, tesw: 15 },
-          { name: 'ahmad', age: 33, test: 12, tesw: 15 },
-        ]"
+        :items="dealer.dealers"
         :haeders="[
           'Authorized Dealer',
           'Distance (mi)',

@@ -10,7 +10,7 @@ const props = defineProps({
 
 <template>
   <div>
-    <table style="width: 90vw"  class=" text-white text-left my-table">
+    <table style="width: 90vw" class="text-white text-left my-table">
       <thead class="bg-gray-600">
         <tr>
           <th
@@ -24,22 +24,22 @@ const props = defineProps({
       </thead>
       <tbody>
         <tr :key="index" v-for="(item, index) in items">
-          <td  style="width:25%" class="pl-2 ">
+          <td style="width: 25%" class="pl-2">
             <ul class="divide-gray-200">
               <li class="py-2 flex">
                 <p class="text-sm text-gray-200 font-bold">
-                  {{ item.companyName }}
+                  {{ item.serviceCoName }}
                 </p>
               </li>
               <li class="py-2">
                 <div class="flex">
                   <LocationMarkerIcon class="h-6 w-6" />
                   <p class="text-sm text-gray-200 pl-2">
-                    {{ item.address }}
+                    {{ item.address1 }}
                   </p>
                 </div>
 
-                <p class="text-sm text-gray-200 pl-8">{{ item.city }}</p>
+                <p class="text-sm text-gray-200 pl-8">{{ item.address2 }}</p>
               </li>
 
               <li class="py-2">
@@ -52,15 +52,8 @@ const props = defineProps({
               </li>
             </ul>
           </td>
-
           <td class="pt-5" style="vertical-align: sub">
             {{ item.distance }}
-          </td>
-          <td class="pt-5" style="vertical-align: sub">
-            {{ item.comment1 }}
-          </td>
-          <td class="pt-5" style="vertical-align: sub">
-            {{ item.dispatchComment }}
           </td>
         </tr>
       </tbody>
