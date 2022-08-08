@@ -63,21 +63,26 @@
     ]
 
 
-    "records": [
-        {
-            "origin": null,
-            "serviceCoNumber": "1",
-            "serviceCoName": "Alert 360 - Tulsa",
-            "address1": "3158 S 108th E Ave",
-            "address2": "Suite 220",
-            "phone1": "(918) 388-6780",
-            "city": "TULSA",
-            "state": "OK ",
-            "zip": "74146",
-            "distance": "0",
-            "latitude": "36.1169496636609",
-            "longitude": "-95.8564706621439"
-        }
-    ]
-
+    {
+        "httpStatus": null,
+        "httpMethod": null,
+        "error": null,
+        "recordCount": 1,
+        "records": [
+            {
+                "origin": null,
+                "serviceCoNumber": "1",
+                "serviceCoName": "Alert 360 - Tulsa",
+                "address1": "3158 S 108th E Ave",
+                "address2": "Suite 220",
+                "phone1": "(918) 388-6780",
+                "city": "TULSA",
+                "state": "OK ",
+                "zip": "74146",
+                "distance": "0",
+                "latitude": "36.1169496636609",
+                "longitude": "-95.8564706621439"
+            }
+        ]
+    }
 }
