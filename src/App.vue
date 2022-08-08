@@ -11,13 +11,17 @@ import { AdjustmentsIcon } from "@heroicons/vue/outline";
 import { onMounted, ref, reactive, watch } from "vue";
 import { useDealerStore } from "@/stores/dealer";
 import Map from "@/components/Map.vue";
+import DelearsTable from "@/components/DelearsTable.vue";
+
 //data
+
 const dealer = useDealerStore();
 const item = reactive({});
 const open = ref(false);
 const filter = reactive({
   MaxResults: 20,
   MaxRadius: 300,
+  Keywords: "",
 });
 let center = reactive({});
 
@@ -28,27 +32,39 @@ const setPlace = (e) => {
       lat: (e.geometry.viewport.ub.hi + e.geometry.viewport.ub.lo) / 2,
       lng: (e.geometry.viewport.Ra.hi + e.geometry.viewport.Ra.lo) / 2,
     };
+
+    let params = {
+      Lat: center.value.lat,
+      Lon: center.value.lng,
+      ...filter,
+    };
+    dealer.getDealers(params);
+    dealer.getBranches(params);
+  }
+};
+const search = () => {
+  if (center.value) {
+    let params = {
+      Lat: center.value.lat,
+      Lon: center.value.lng,
+      ...filter,
+    };
+    dealer.getDealers(params);
+    dealer.getBranches(params);
   }
 };
 //mouinted
 onMounted(() => {});
 
 //whatch
-watch([filter, center], (a) => {
-  if (a[1].value) {
-    let params = {
-      Lat: a[1].value.lat,
-      Lon: a[1].value.lng,
-      ...a[0],
-    };
-    dealer.getDealers(params);
-    dealer.getBranches(params);
-  }
-});
+// watch([filter, center], (a) => {
+//   if (a[1].value) {
+//   }
+// });
 </script>
 
 <template>
-  <div>
+  <div class="container">
     <div class="py-5 flex justify-between items-center">
       <div>
         <span
@@ -139,14 +155,14 @@ watch([filter, center], (a) => {
                           as="h3"
                           class="text-xl leading-6 font-medium text-gray-900"
                         >
-                          filter settings
+                          Filter Results
                         </DialogTitle>
                         <div class="mt-2">
                           <ul class="divide-y divide-gray-200">
                             <li class="py-2 flex">
                               <div class="ml-3">
                                 <p class="font-medium text-lg text-gray-900">
-                                  max results
+                                  Max Results
                                   {{ filter.MaxResults }}
                                 </p>
                                 <div class="flex">
@@ -256,7 +272,7 @@ watch([filter, center], (a) => {
                             <li class="py-2 flex">
                               <div class="ml-3">
                                 <p class="font-medium text-lg text-gray-900">
-                                  max radius {{ filter.MaxRadius }}
+                                  Max Radius {{ filter.MaxRadius }}
                                 </p>
                                 <div class="flex">
                                   <button
@@ -365,11 +381,12 @@ watch([filter, center], (a) => {
                             <li class="py-2 flex">
                               <div class="ml-3">
                                 <p class="font-medium text-lg text-gray-900">
-                                  key word
+                                  Key Words
                                 </p>
                                 <div class="flex">
                                   <input
-                                    placeholder="test"
+                                    v-model="filter.Keywords"
+                                    placeholder="Keywords"
                                     class="border-2 mt-2 p-2"
                                     type="text"
                                   />
@@ -411,7 +428,10 @@ watch([filter, center], (a) => {
                         focus:ring-blue-500
                         sm:ml-3 sm:w-auto sm:text-sm
                       "
-                      @click="open = false"
+                      @click="
+                        open = false;
+                        search();
+                      "
                     >
                       search
                     </button>
@@ -478,7 +498,33 @@ watch([filter, center], (a) => {
       </div>
     </div>
 
-    <Map :center2="center.value" />
+    <Map class="border-2 border-white" :center2="center.value" />
+
+    <div   v-if="dealer.branches[0] || dealer.dealers[0]" class="border-2 border-white p-5">
+      <DelearsTable
+        v-if="dealer.branches[0]"
+        :items="[
+          { name: 'ahmad', age: 33 },
+          { name: 'ahmad', age: 33 },
+        ]"
+        :haeders="['Branch Office', 'Distance (mi)']"
+      />
+      <DelearsTable
+        v-if="dealer.dealers[0]"
+        class="mt-8"
+        :items="[
+          { name: 'ahmad', age: 33, test: 12, tesw: 15 },
+          { name: 'ahmad', age: 33, test: 12, tesw: 15 },
+          { name: 'ahmad', age: 33, test: 12, tesw: 15 },
+        ]"
+        :haeders="[
+          'Authorized Dealer',
+          'Distance (mi)',
+          'Other Comments',
+          'Dispatch Comments',
+        ]"
+      />
+    </div>
   </div>
 
   <!-- <RouterView /> -->

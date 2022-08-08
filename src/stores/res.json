@@ -1,0 +1,83 @@
+{
+    "httpStatus": null,
+    "httpMethod": null,
+    "error": null,
+    "recordCount": 2,
+    "records": [
+        {
+            "origin": null,
+            "dealerNumber": "2016",
+            "companyName": "Bulldog Security, LLC",
+            "address": "203 Blair Circle",
+            "comment1": "DC: Robin Minter X21661",
+            "comment2": null,
+            "comment3": null,
+            "dispatchComment": "2GIG DEALER\r\n*Can give out phone 1 to customers*\r\nWILL INSTALL SEM's",
+            "serviceComment": null,
+            "phone1": "(479) 957-0462",
+            "city": "PEA RIDGE",
+            "state": "AR",
+            "zip": "72751",
+            "distance": "0",
+            "latitude": "36.4435342",
+            "longitude": "-94.1078678",
+            "searchParams": {
+                "origin": "",
+                "lat": "36.33650600617695",
+                "lon": "-95.68154293555827",
+                "precision": true,
+                "maxResults": 50,
+                "mapSessionKey": "",
+                "maxRadius": 100,
+                "keywords": ""
+            }
+        },
+        {
+            "origin": null,
+            "dealerNumber": "19189",
+            "companyName": "Stone Security",
+            "address": "2528 E BRADLEY ST",
+            "comment1": "DC:Christine Garrett ext 21579",
+            "comment2": null,
+            "comment3": null,
+            "dispatchComment": null,
+            "serviceComment": null,
+            "phone1": "(405) 613-3287",
+            "city": "SHAWNEE",
+            "state": "OK",
+            "zip": "74804",
+            "distance": "0",
+            "latitude": "35.352087",
+            "longitude": "-96.8899496",
+            "searchParams": {
+                "origin": "",
+                "lat": "36.33650600617695",
+                "lon": "-95.68154293555827",
+                "precision": true,
+                "maxResults": 50,
+                "mapSessionKey": "",
+                "maxRadius": 100,
+                "keywords": ""
+            }
+        }
+    ]
+
+
+    "records": [
+        {
+            "origin": null,
+            "serviceCoNumber": "1",
+            "serviceCoName": "Alert 360 - Tulsa",
+            "address1": "3158 S 108th E Ave",
+            "address2": "Suite 220",
+            "phone1": "(918) 388-6780",
+            "city": "TULSA",
+            "state": "OK ",
+            "zip": "74146",
+            "distance": "0",
+            "latitude": "36.1169496636609",
+            "longitude": "-95.8564706621439"
+        }
+    ]
+
+}

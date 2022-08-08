@@ -4,6 +4,8 @@ export const useDealerStore = defineStore({
     id: 'dealer',
     state: () => ({
         all: [],
+        branches: [],
+        dealers: [],
     }),
     getters: {},
     actions: {
@@ -13,7 +15,7 @@ export const useDealerStore = defineStore({
                 "Origin": "",
                 "Precision": true,
                 "MapSessionKey": "",
-                "Keywords": ""
+
             }
             let headers = {
                 Accept: "application/json",
@@ -21,8 +23,8 @@ export const useDealerStore = defineStore({
             };
             try {
                 const response = await axios.post('https://localhost:5013/api/branches/searchDealers', new_params, { headers })
-                this.all = response.data
-                console.log(response.data);
+                this.dealers = response.records
+                console.log(response.records);
             } catch (error) {
                 console.log(error);
             }
@@ -33,7 +35,7 @@ export const useDealerStore = defineStore({
                 "Origin": "",
                 "Precision": true,
                 "MapSessionKey": "",
-                "Keywords": ""
+
             }
             let headers = {
                 Accept: "application/json",
@@ -41,8 +43,8 @@ export const useDealerStore = defineStore({
             };
             try {
                 const response = await axios.post('https://localhost:5013/api/branches/searchBranches', new_params, { headers })
-                this.all = response.data
-                console.log(response.data);
+                this.branches = response.records
+
             } catch (error) {
                 console.log(error);
             }

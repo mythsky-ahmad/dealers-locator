@@ -4,6 +4,9 @@
       style="width: 90vw; height: 80vh"
       :center="center"
       :zoom="10"
+      :options="{
+        gestureHandling: 'greedy',
+      }"
       map-type-id="terrain"
     >
       <GMapMarker
@@ -15,7 +18,6 @@
         :icon="{
           url: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTA3bgI4Z_xq271agLfNeTWmJbha3-ZPm7bHVO6wjU&s',
           scaledSize: { width: 22, height: 22 },
-          labelOrigin: { x: 16, y: -10 },
         }"
         @click="openMarker(m.id)"
       >
